@@ -36,7 +36,7 @@ def are_chords_equal(c1: Chord, notes: List[str]) -> bool:
 
     return True
 
-def quiz() -> Note:
+def quiz() -> None:
     note = choice(notes)
     chord_name, chord_key = choice(list(data.items()))
     print(chord_name, chord_key)
@@ -48,3 +48,6 @@ def quiz() -> Note:
     is_correct = are_chords_equal(target_chord, submission)
 
     print("You were right!") if is_correct else print("You were wrong.")
+
+if __name__ == "__main__":
+    quiz()
