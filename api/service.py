@@ -16,7 +16,7 @@ def do_grading(quizType, letter, operation, submission):
     if quizType == 'chord':
         return grade_chord(letter, operation, submission)
     elif quizType == 'scale':
-        return grade_scale(letter, operation, submisssion)
+        return grade_scale(letter, operation, submission)
     else:
         raise ValueError("Unrecognized quiz type")
 

@@ -17,7 +17,7 @@
             webpage.
         </h4>
 
-        <select id="quiz-type" name="type">
+        <select id="quiz-type" name="type" onchange="bootstrap()">
             <option value="chord">Chords</option>
             <option value="scale">Scales</option>
         </select>
@@ -28,27 +28,42 @@
         </h3>
 
         <input type="text" id="user-answer" data-lpignore="true" />
-        <input onclick="foo()" type="submit" />
+        <input onclick="submit()" type="submit" />
+
+        <h5 id="status"></h5>
 
         <script>
-            axios
-                .get('/bootstrap?quizType=chord')
-                .then(function(response) {
-                    const { note, operation_id, operation_name } = response.data
+            bootstrap()
+            function bootstrap() {
+                const quizTypeNode = document.getElementById('quiz-type')
+                const quizType =
+                    quizTypeNode.options[quizTypeNode.selectedIndex].value
 
-                    const letterNode = document.getElementById('letter')
-                    letterNode.innerText = note
-                    letterNode.setAttribute('key', note)
+                axios
+                    .get(`/bootstrap?quizType=${quizType}`)
+                    .then(function(response) {
+                        const {
+                            note,
+                            operation_id,
+                            operation_name
+                        } = response.data
 
-                    const operationNode = document.getElementById('operation')
-                    operationNode.innerText = operation_name
-                    operationNode.setAttribute('key', operation_id)
-                })
-                .catch(function(err) {
-                    console.err('There was a heckin error with the request')
-                })
+                        const letterNode = document.getElementById('letter')
+                        letterNode.innerText = note
+                        letterNode.setAttribute('key', note)
 
-            function foo() {
+                        const operationNode = document.getElementById(
+                            'operation'
+                        )
+                        operationNode.innerText = operation_name
+                        operationNode.setAttribute('key', operation_id)
+                    })
+                    .catch(function(err) {
+                        console.err('There was a heckin error with the request')
+                    })
+            }
+
+            function submit() {
                 const quizTypeNode = document.getElementById('quiz-type')
                 const quizType =
                     quizTypeNode.options[quizTypeNode.selectedIndex].value
@@ -69,7 +84,20 @@
                         submission
                     })
                     .then(function(response) {
-                        console.log(response)
+                        // Clear the text field
+                        document.getElementById('user-answer').value = ''
+
+                        const { is_correct } = response.data
+                        const statusNode = document.getElementById('status')
+
+                        if (is_correct) {
+                            statusNode.innerText = 'You got it correct!'
+                            // Show success
+                        } else {
+                            statusNode.innerText = 'You got it wrong, dumbfuck.'
+                            // Show error
+                        }
+                        bootstrap() // Prepare for next quiz
                     })
                     .catch(function(err) {
                         console.log(err)
