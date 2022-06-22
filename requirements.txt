@@ -33,7 +33,7 @@ mccabe==0.6.1
 multidict==4.7.5
 -e git+git@github.com:neilramaswamy/musthe.git@2dd42b7021ca68d878f82f4b72fbed6f83a3bd86#egg=musthe
 NeuroPy==0.1
-numpy==1.18.1
+numpy==1.22.0
 pyasn1==0.4.8
 PyBluez==0.23
 pycodestyle==2.5.0
